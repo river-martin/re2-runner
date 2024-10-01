@@ -6,14 +6,14 @@ def match_info_from_match(match, id=1):
     match_info = io.StringIO()
     match_info.write(f"[match_{id}]\n")
     match_info.write(
-        f"\n[match_{id}.group_0]\nspan = {list(match.span())}\nstr = {match.group()}\n"
+        f"\n[match_{id}.group_0]\nspan = {list(match.span())}\nstr = '''{match.group()}'''\n"
     )
     for i, group in enumerate(match.groups(), start=1):
         match_info.write(f"\n[match_{id}.group_{i}]\n")
         if group is None:
             match_info.write("# not captured\n")
             continue
-        match_info.write(f"span = {list(match.span(i))}\nstr = {group}\n")
+        match_info.write(f"span = {list(match.span(i))}\nstr = '''{group}'''\n")
     return match_info.getvalue()
 
 
