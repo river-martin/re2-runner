@@ -1,6 +1,6 @@
 # re2-runner
 
-Runs the [RE2](https://github.com/google/re2) regex engine and outputs match information in [Tom's Obvious Minimal Language (TOML)](https://tomhttps://toml.io/en/l.io/en/).
+Runs partial matching with the [RE2](https://github.com/google/re2) regex engine and outputs match information in [Tom's Obvious Minimal Language (TOML)](https://tomhttps://toml.io/en/l.io/en/).
 
 ## Usage
 
