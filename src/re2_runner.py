@@ -110,7 +110,9 @@ def parse_args():
         help="(false) ^ and $ only match beginning and end of text",
     )
 
-    parser.add_argument("regex", help="The regex pattern")
+    parser.add_argument(
+        "regex_file_path", help="A path to the file containing the regex"
+    )
     parser.add_argument(
         "input_file_path", help="A path to a file containing the text to search"
     )
@@ -159,10 +161,12 @@ if __name__ == "__main__":
         if hasattr(options, key):
             setattr(options, key, value)
         else:
-            assert key == "regex" or key == "input_file_path"
+            assert key == "regex_file_path" or key == "input_file_path"
+    with open(args.regex_file_path, "r") as f:
+        regex = f.read()
     with open(args.input_file_path, "r") as f:
         text = f.read()
-    match = re2.match(args.regex, text)
+    match = re2.match(regex, text)
     if match is not None:
         print(match_info_from_match(match))
     else:
