@@ -23,7 +23,7 @@ def parse_args():
 
     parser = argparse.ArgumentParser(
         description="RE2 runner",
-        usage="""re2_runner.py [options] <pattern> <text>""",
+        usage="""re2_runner.py [options] <pattern> <input_file_path>""",
         # Keep the format of the epilog consistent with the above
         formatter_class=argparse.RawDescriptionHelpFormatter,
     )
@@ -111,7 +111,9 @@ def parse_args():
     )
 
     parser.add_argument("regex", help="The regex pattern")
-    parser.add_argument("text", help="The text to search for the pattern")
+    parser.add_argument(
+        "input_file_path", help="A path to a file containing the text to search"
+    )
 
     epilog = r"""
         The max_mem option controls how much memory can be used
@@ -157,8 +159,10 @@ if __name__ == "__main__":
         if hasattr(options, key):
             setattr(options, key, value)
         else:
-            assert key == "regex" or key == "text"
-    match = re2.match(args.regex, args.text)
+            assert key == "regex" or key == "input_file_path"
+    with open(args.input_file_path, "r") as f:
+        text = f.read()
+    match = re2.match(args.regex, text)
     if match is not None:
         print(match_info_from_match(match))
     else:
