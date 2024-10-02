@@ -2,21 +2,6 @@ import re2
 import io
 
 
-def match_info_from_match(match, id=1):
-    match_info = io.StringIO()
-    match_info.write(f"[match_{id}]\n")
-    match_info.write(
-        f"\n[match_{id}.group_0]\nspan = {list(match.span())}\nstr = '''{match.group()}'''\n"
-    )
-    for i, group in enumerate(match.groups(), start=1):
-        match_info.write(f"\n[match_{id}.group_{i}]\n")
-        if group is None:
-            match_info.write("# not captured\n")
-            continue
-        match_info.write(f"span = {list(match.span(i))}\nstr = '''{group}'''\n")
-    return match_info.getvalue()
-
-
 def parse_args():
     import argparse
     import textwrap
@@ -41,9 +26,9 @@ def parse_args():
     )
     parser.add_argument(
         "--log_errors",
-        default=True,
+        default=False,
         action="store_true",
-        help="(true) log syntax and execution errors to ERROR",
+        help="(false) log syntax and execution errors to ERROR",
     )
     parser.add_argument(
         "--max_mem",
@@ -152,6 +137,21 @@ def parse_args():
     return parser.parse_args()
 
 
+def match_info_from_match(match, id=1):
+    match_info = io.StringIO()
+    match_info.write(f"[match_{id}]\n")
+    match_info.write(
+        f"\n[match_{id}.group_0]\nspan = {list(match.span())}\nstr = '''{match.group()}'''\n"
+    )
+    for i, group in enumerate(match.groups(), start=1):
+        match_info.write(f"\n[match_{id}.group_{i}]\n")
+        if group is None:
+            match_info.write("# not captured\n")
+            continue
+        match_info.write(f"span = {list(match.span(i))}\nstr = '''{group}'''\n")
+    return match_info.getvalue()
+
+
 if __name__ == "__main__":
     args = parse_args()
     options = re2.Options()
@@ -166,7 +166,11 @@ if __name__ == "__main__":
         regex = f.read()
     with open(args.input_file_path, "r") as f:
         text = f.read()
-    match = re2.match(regex, text)
+    try:
+        match = re2.match(regex, text, options=options)
+    except re2.error as e:
+        print(f"# re2.error: {e}")
+        exit(1)
     if match is not None:
         print(match_info_from_match(match))
     else:
