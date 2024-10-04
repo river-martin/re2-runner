@@ -24,10 +24,8 @@ FetchContent_MakeAvailable(googletest)
 add_subdirectory(abseil-cpp ${CMAKE_BINARY_DIR}/abseil-cpp)
 add_subdirectory(re2 ${CMAKE_BINARY_DIR}/re2)
 
-add_library(libre2_runner.a src/re2_runner.cc)
-
-add_executable(re2_runner src/app.cc)
+add_executable(re2-cla src/re2-cla.cc)
 add_executable(test_re2 tests/test_re2.cc)
 
-target_link_libraries(re2_runner re2::re2 absl::log_initialize libre2_runner.a)
-target_link_libraries(test_re2  re2::re2 gtest_main absl::log_initialize libre2_runner.a)
+target_link_libraries(re2-cla re2::re2 absl::log_initialize)
+target_link_libraries(test_re2  re2::re2 gtest_main absl::log_initialize)
