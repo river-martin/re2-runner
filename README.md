@@ -6,22 +6,16 @@ Runs partial matching with the [RE2](https://github.com/google/re2) regex engine
 
 ```Bash
 git submodule update --init --recursive
+# CMake will change files in the submodules that we don't want git to track
+git config submodule.re2.ignore dirty
+git config submodule.abseil-cpp.ignore dirty
 # Build and install abseil
-cd abseil-cpp
 mkdir build && cd build
-cmake .. -DCMAKE_INSTALL_PREFIX=/usr/local
-sudo cmake --build . --target install
-# Build the re2 static library
-cd ../../re2
-make obj/libre2.a
-# Build re2_runner
-cd ../
-cmake .
+cmake -DCMAKE_BUILD_TYPE=Debug -DABSL_ENABLE_INSTALL=ON ..
 cmake --build .
 ```
 
 ## Usage
 
 ```Bash
-python3 src/re2_runner.py -h
 ```
