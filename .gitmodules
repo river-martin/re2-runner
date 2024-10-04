@@ -1,0 +1,6 @@
+[submodule "re2"]
+	path = re2
+	url = https://github.com/google/re2.git
+[submodule "abseil-cpp"]
+	path = abseil-cpp
+	url = https://github.com/abseil/abseil-cpp.git
