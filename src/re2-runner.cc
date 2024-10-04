@@ -45,7 +45,7 @@ std::size_t utf8_distance(const char *begin, const char *end) {
  * @param filename The name of the file to read.
  * @return The content of the file as a string.
  */
-extern std::string read_file(const char *filename) {
+std::string read_file(const char *filename) {
   std::ifstream input_file_stream(filename);
   assert(input_file_stream.is_open());
   std::stringstream buffer;
