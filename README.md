@@ -18,4 +18,5 @@ cmake --build .
 ## Usage
 
 ```Bash
+./build/re2-cla regex.txt str.txt
 ```

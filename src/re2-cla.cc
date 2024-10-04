@@ -91,9 +91,9 @@ int main(int argc, const char *argv[]) {
   RE2 regex(pattern);
   std::size_t nsubmatch = regex.NumberOfCapturingGroups() + 1;
   std::string_view *submatch = new std::string_view[nsubmatch];
-  std::size_t startpos = 0, endpos = s.size();
+  std::size_t spos = 0, epos = s.length();
 
-  if (regex.Match(s, startpos, endpos, RE2::UNANCHORED, submatch, nsubmatch)) {
+  if (regex.Match(s, spos, epos, RE2::UNANCHORED, submatch, nsubmatch)) {
     print_match_info(s, submatch, nsubmatch);
   } else {
     std::cout << "# no match\n\n";
