@@ -2,9 +2,10 @@ cmake_minimum_required(VERSION 3.16)
 
 project(re2-runner)
 
-set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CDD_STANDARD_REQUIRED ON)
-
+set(ABSL_ENABLE_INSTALL ON)
+set(ABSL_PROPAGATE_CXX_STD ON)
+set(CMAKE_CXX_STANDARD 23)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
 # Set the build type to Debug
 if(NOT CMAKE_BUILD_TYPE)
   set(CMAKE_BUILD_TYPE Debug CACHE STRING "Choose the type of build." FORCE)
@@ -21,9 +22,15 @@ FetchContent_Declare(
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 FetchContent_MakeAvailable(googletest)
 
+include_directories(${CMAKE_SOURCE_DIR}/abseil-cpp)
+include_directories(${CMAKE_SOURCE_DIR}/re2)
+
 # Import Abseil's CMake targets
-add_subdirectory(abseil-cpp ${CMAKE_BINARY_DIR}/abseil-cpp)
-add_subdirectory(re2 ${CMAKE_BINARY_DIR}/re2)
+set(SAVED_CMAKE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX})
+set(CMAKE_INSTALL_PREFIX ${CMAKE_BINARY_DIR}/install)
+add_subdirectory(abseil-cpp)
+set(CMAKE_INSTALL_PREFIX ${SAVED_CMAKE_INSTALL_PREFIX})
+add_subdirectory(re2)
 add_library(re2-runner-lib STATIC src/re2-runner-lib.cc src/re2-runner-lib.h)
 add_library(re2::re2 ALIAS re2)
 
