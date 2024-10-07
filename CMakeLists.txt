@@ -14,6 +14,7 @@ include(FetchContent)
 FetchContent_Declare(
   googletest
   URL https://github.com/google/googletest/archive/03597a01ee50ed33e9dfd640b249b4be3799d395.zip
+  DOWNLOAD_EXTRACT_TIMESTAMP true
 )
 
 # For Windows: Prevent overriding the parent project's compiler/linker settings
@@ -23,9 +24,11 @@ FetchContent_MakeAvailable(googletest)
 # Import Abseil's CMake targets
 add_subdirectory(abseil-cpp ${CMAKE_BINARY_DIR}/abseil-cpp)
 add_subdirectory(re2 ${CMAKE_BINARY_DIR}/re2)
+add_library(re2-runner-lib STATIC src/re2-runner-lib.cc src/re2-runner-lib.h)
+add_library(re2::re2 ALIAS re2)
 
 add_executable(re2-runner src/re2-runner.cc)
 add_executable(test_re2 tests/test_re2.cc)
 
-target_link_libraries(re2-runner re2::re2 absl::log_initialize)
-target_link_libraries(test_re2  re2::re2 gtest_main absl::log_initialize)
+target_link_libraries(re2-runner re2-runner-lib re2::re2 absl::log_initialize)
+target_link_libraries(test_re2 re2-runner-lib re2::re2 gtest_main absl::log_initialize)

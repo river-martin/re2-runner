@@ -11,8 +11,8 @@ git config submodule.re2.ignore dirty
 git config submodule.abseil-cpp.ignore dirty
 # Build and install abseil
 mkdir build && cd build
-cmake -DCMAKE_BUILD_TYPE=Debug -DABSL_ENABLE_INSTALL=ON ..
-cmake --build .
+cmake -DCMAKE_BUILD_TYPE=Debug -DABSL_ENABLE_INSTALL=ON -DABSL_PROPAGATE_CXX_STD=ON -DCMAKE_INSTALL_PREFIX=$(pwd) ..
+cmake --build $(pwd)
 ```
 
 ## Usage
