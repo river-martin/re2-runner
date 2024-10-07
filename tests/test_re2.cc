@@ -5,7 +5,7 @@
 
 TEST(Re2RunnerTest, test0) {
   std::string pattern = "(?:(a)|()|(b))+";
-  std::string s = "aa";
+  std::string s = "ab";
   run_and_print_match_info(pattern, s);
 }
 
@@ -30,6 +30,12 @@ TEST(Re2RunnerTest, test3) {
 TEST(Re2RunnerTest, test4) {
   std::string pattern = "(?:()|a)*";
   std::string s = "aa";
+  run_and_print_match_info(pattern, s);
+}
+
+TEST(Re2RunnerTest, test5) {
+  std::string pattern = "(?:(a)|()|(b))+?";
+  std::string s = "ab";
   run_and_print_match_info(pattern, s);
 }
 
