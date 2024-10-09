@@ -4,14 +4,28 @@
 #include "../re2/re2/prog.h"
 #include "../re2/re2/re2.h"
 #include "../re2/re2/regexp.h"
+#include "absl/strings/str_format.h"
 #include "utils.h"
+
+// Note: copied from re2/re2/prog.cc, with the `id` parameter removed.
+static std::string FlattenedProgToString(re2::Prog *prog) {
+  std::string s;
+  for (int id = prog->start_unanchored(); id < prog->size(); id++) {
+    re2::Prog::Inst *ip = prog->inst(id);
+    if (ip->last())
+      s += absl::StrFormat(". %s\n", ip->Dump());
+    else
+      s += absl::StrFormat("+ %s\n", ip->Dump());
+  }
+  return s;
+}
 
 std::string pattern_to_prog_string(const std::string &pattern) {
   RE2 regex(pattern);
   re2::Regexp *regexp = regex.Regexp();
   re2::Prog *prog = regexp->CompileToProg(0);
   prog->Flatten();
-  return prog->DumpUnanchored();
+  return FlattenedProgToString(prog);
 }
 
 std::string pattern_to_reverse_prog_string(const std::string &pattern) {
@@ -19,7 +33,7 @@ std::string pattern_to_reverse_prog_string(const std::string &pattern) {
   re2::Regexp *regexp = regex.Regexp();
   re2::Prog *reverse_prog = regexp->CompileToReverseProg(0);
   reverse_prog->Flatten();
-  return reverse_prog->DumpUnanchored();
+  return FlattenedProgToString(reverse_prog);
 }
 
 int main(int argc, const char *argv[]) {
