@@ -4,36 +4,48 @@
 #include "../src/re2-runner-lib.h"
 
 TEST(Re2RunnerTest, test0) {
-  std::string pattern = "(?:(a)|()|(b))+";
-  std::string s = "ab";
+  std::string pattern = "(?:(a)|()|(b))*$";
+  std::string s = "abb";
   run_and_print_match_info(pattern, s);
 }
 
 TEST(Re2RunnerTest, test1) {
+  std::string pattern = "(?:(a)|()|(b))*";
+  std::string s = "abb";
+  run_and_print_match_info(pattern, s);
+}
+
+TEST(Re2RunnerTest, test2) {
+  std::string pattern = "(a|()|b)*";
+  std::string s = "abb";
+  run_and_print_match_info(pattern, s);
+}
+
+TEST(Re2RunnerTest, test3) {
   std::string pattern = "((a||b)*)+";
   std::string s = "ab";
   run_and_print_match_info(pattern, s);
 }
 
-TEST(Re2RunnerTest, test2) {
+TEST(Re2RunnerTest, test4) {
   std::string pattern = "(a*)+";
   std::string s = "aa";
   run_and_print_match_info(pattern, s);
 }
 
-TEST(Re2RunnerTest, test3) {
+TEST(Re2RunnerTest, test5) {
   std::string pattern = "(a+b+)+";
   std::string s = "abab";
   run_and_print_match_info(pattern, s);
 }
 
-TEST(Re2RunnerTest, test4) {
+TEST(Re2RunnerTest, test6) {
   std::string pattern = "(?:()|a)*";
   std::string s = "aa";
   run_and_print_match_info(pattern, s);
 }
 
-TEST(Re2RunnerTest, test5) {
+TEST(Re2RunnerTest, test7) {
   std::string pattern = "(?:(a)|()|(b))+?";
   std::string s = "ab";
   run_and_print_match_info(pattern, s);
